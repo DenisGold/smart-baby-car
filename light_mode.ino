@@ -10,7 +10,7 @@ int buttonMode = 12;
 int buttonModeLastState = 0;
 String modes[4] = {"stroboscop", "light", "wave", "haos"};
 int modesSize = sizeof(modes) / sizeof(modes[0]);
-int modeIndex = 2;
+int modeIndex = 3;
 String mode = modes[modeIndex];
 
 int intervalValue = 0;
@@ -26,6 +26,11 @@ int intervalModes = sizeof(interval) / sizeof(interval[0]);
 int waveValue = 0;
 int waveMax = 8;
 int waveDelay = 75;
+
+//haos mode
+int haosValue = 0;
+int haosMax = 4;
+int haosDelay = 200;
 
 void setup()  { 
   Serial.begin(9600);
@@ -55,7 +60,7 @@ void loop()  {
     //Стробоскоп режим
     if(mode == "stroboscop"){
         intervalValue += 1;
-        
+
         if(interval[intervalMode] == intervalValue){
             intervalValue = 0;
 
@@ -129,14 +134,44 @@ void loop()  {
         delay(waveDelay);
     
     }else if(mode == "haos"){
-        digitalWrite(forward_left_left, HIGH);
-        digitalWrite(fordward_left_right, LOW);
-        digitalWrite(forward_right_right, HIGH);
-        digitalWrite(forward_right_left, LOW);
-        digitalWrite(back_right, HIGH);
-        digitalWrite(back_left, HIGH);
+        if(haosValue == 0){
+            digitalWrite(forward_left_left, HIGH);
+            digitalWrite(fordward_left_right, LOW);
+            digitalWrite(forward_right_right, LOW);
+            digitalWrite(forward_right_left, HIGH);
+            digitalWrite(back_right, HIGH);
+            digitalWrite(back_left, LOW);
+        }
+        if(haosValue == 1){
+            digitalWrite(forward_left_left, LOW);
+            digitalWrite(fordward_left_right, HIGH);
+            digitalWrite(forward_right_right, HIGH);
+            digitalWrite(forward_right_left, LOW);
+            digitalWrite(back_right, LOW);
+            digitalWrite(back_left, HIGH);
+        }
+        if(haosValue == 2){
+            digitalWrite(forward_left_left, HIGH);
+            digitalWrite(fordward_left_right, LOW);
+            digitalWrite(forward_right_right, HIGH);
+            digitalWrite(forward_right_left, LOW);
+            digitalWrite(back_right, HIGH);
+            digitalWrite(back_left, LOW);
+        }
+        if(haosValue == 3){
+            digitalWrite(forward_left_left, LOW);
+            digitalWrite(fordward_left_right, HIGH);
+            digitalWrite(forward_right_right, LOW);
+            digitalWrite(forward_right_left, HIGH);
+            digitalWrite(back_right, LOW);
+            digitalWrite(back_left, HIGH);
+        }
+
+        haosValue += 1;
+        if(haosValue == haosMax)
+            haosValue = 0;
         
-        delay(1);
+        delay(haosDelay);
 
     }
                      
